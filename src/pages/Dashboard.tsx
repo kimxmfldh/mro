@@ -60,17 +60,23 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-2xl font-bold text-text-primary">대시보드</h1>
+        <p className="text-sm text-text-secondary mt-1">업무 현황을 한눈에 확인하세요</p>
+      </div>
+
       {/* 요약 카드 */}
       <div className="grid grid-cols-4 gap-6">
         {summaryCards.map((card) => (
-          <Card key={card.title} className="relative overflow-hidden hover:shadow-sm transition-shadow">
+          <Card key={card.title} className="relative overflow-hidden hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">{card.title}</p>
                 <p className="text-3xl font-bold text-text-primary">{card.value}</p>
               </div>
-              <div className={`${card.color} p-3 rounded-lg`}>
+              <div className={`${card.color} p-3 rounded-xl`}>
                 <card.icon size={20} className="text-white" />
               </div>
             </div>

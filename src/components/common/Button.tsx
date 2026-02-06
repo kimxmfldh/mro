@@ -17,13 +17,13 @@ const Button: React.FC<ButtonProps> = ({
   className = '',
   disabled = false,
 }) => {
-  const baseStyles = 'px-4 py-2 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm';
+  const baseStyles = 'px-4 py-2 rounded-lg font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm inline-flex items-center justify-center';
 
   const variantStyles = {
-    primary: 'bg-primary text-white hover:bg-primary-light shadow-sm hover:shadow',
-    secondary: 'bg-white text-text-primary border border-border hover:bg-gray-50',
-    danger: 'bg-danger text-white hover:bg-danger/90 shadow-sm',
-    accent: 'bg-accent text-white hover:bg-accent/90',
+    primary: 'bg-primary text-white hover:bg-primary-dark shadow-sm hover:shadow',
+    secondary: 'bg-white text-text-primary border border-border hover:bg-gray-50 hover:border-gray-300',
+    danger: 'bg-danger text-white hover:opacity-90 shadow-sm',
+    accent: 'bg-accent text-white hover:bg-accent-light shadow-sm',
   };
 
   return (

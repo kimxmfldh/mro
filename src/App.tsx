@@ -4,6 +4,9 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Checklist from './pages/Checklist';
+import Categories from './pages/Categories';
+import Statistics from './pages/Statistics';
+import Settings from './pages/Settings';
 import TaskModal from './components/TaskModal';
 import { tasks as initialTasks, users } from './data/mockData';
 import { Task, TaskCycle, TaskPriority } from './types';
@@ -100,6 +103,9 @@ function App() {
               />
             }
           />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/statistics" element={<Statistics />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
 

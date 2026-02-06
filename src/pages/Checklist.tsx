@@ -95,9 +95,21 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
 
   return (
     <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-text-primary">체크리스트</h1>
+          <p className="text-sm text-text-secondary mt-1">모든 업무를 관리하고 추적하세요</p>
+        </div>
+        <Button variant="primary" onClick={onOpenTaskModal}>
+          <Plus size={18} className="mr-2" />
+          새 업무
+        </Button>
+      </div>
+
       {/* 필터바 */}
       <Card>
-        <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-3 flex-wrap">
           <Select
             value={selectedCategory}
             onChange={setSelectedCategory}
@@ -127,12 +139,8 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
             value={searchKeyword}
             onChange={setSearchKeyword}
             placeholder="업무명 검색..."
-            className="w-48"
+            className="w-64"
           />
-          <Button variant="primary" onClick={onOpenTaskModal} className="ml-auto">
-            <Plus size={20} className="inline mr-1" />
-            새 업무
-          </Button>
         </div>
       </Card>
 
