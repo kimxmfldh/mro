@@ -10,10 +10,10 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ children, className = '', title, onClick }) => {
   return (
     <div
-      className={`bg-bg-card rounded-lg shadow-md p-6 ${onClick ? 'cursor-pointer hover:shadow-lg transition-shadow' : ''} ${className}`}
+      className={`bg-bg-card rounded-xl border border-border p-6 ${onClick ? 'cursor-pointer hover:border-gray-300 transition-all' : ''} ${className}`}
       onClick={onClick}
     >
-      {title && <h3 className="text-lg font-semibold text-text-primary mb-4">{title}</h3>}
+      {title && <h3 className="text-base font-semibold text-text-primary mb-4">{title}</h3>}
       {children}
     </div>
   );

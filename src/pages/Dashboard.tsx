@@ -41,9 +41,9 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
   });
 
   const summaryCards = [
-    { title: '전체 업무', value: totalTasks, icon: LayoutGrid, color: 'bg-blue-500' },
+    { title: '전체 업무', value: totalTasks, icon: LayoutGrid, color: 'bg-gray-700' },
     { title: '완료', value: completedTasks, icon: CheckCircle, color: 'bg-success' },
-    { title: '미완료', value: pendingTasks, icon: Clock, color: 'bg-warning' },
+    { title: '미완료', value: pendingTasks, icon: Clock, color: 'bg-gray-500' },
     { title: '지연', value: overdueTasks, icon: AlertCircle, color: 'bg-danger' },
   ];
 
@@ -64,14 +64,14 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
       {/* 요약 카드 */}
       <div className="grid grid-cols-4 gap-6">
         {summaryCards.map((card) => (
-          <Card key={card.title} className="relative overflow-hidden">
+          <Card key={card.title} className="relative overflow-hidden hover:shadow-sm transition-shadow">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-text-secondary mb-1">{card.title}</p>
+                <p className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">{card.title}</p>
                 <p className="text-3xl font-bold text-text-primary">{card.value}</p>
               </div>
-              <div className={`${card.color} p-3 rounded-full`}>
-                <card.icon size={24} className="text-white" />
+              <div className={`${card.color} p-3 rounded-lg`}>
+                <card.icon size={20} className="text-white" />
               </div>
             </div>
           </Card>
@@ -114,16 +114,16 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
               {todayTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="flex items-start p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-start p-3 border border-border rounded-lg hover:border-gray-300 transition-all"
                 >
                   <input
                     type="checkbox"
                     checked={task.isChecked}
                     onChange={() => onToggleTask(task.id)}
-                    className="mt-1 mr-3 w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    className="mt-1 mr-3 w-4 h-4 text-primary focus:ring-primary border-border rounded"
                   />
                   <div className="flex-1">
-                    <p className={`text-sm font-medium ${task.isChecked ? 'line-through text-gray-400' : 'text-text-primary'}`}>
+                    <p className={`text-sm font-medium ${task.isChecked ? 'line-through text-text-secondary' : 'text-text-primary'}`}>
                       {task.title}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
