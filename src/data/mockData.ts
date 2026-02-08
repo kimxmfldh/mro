@@ -43,45 +43,45 @@ export const categories: Category[] = [
   { id: 21, name: '기타', description: '영업, 구매, 인사, 재경 업무 외 일체', color: '#71717A', sortOrder: 21, isActive: true },
 ];
 
-// 업무 데이터 (다양한 상태)
+// 업무 데이터 (다양한 상태) - companyId 추가
 const today = new Date();
 export const tasks: Task[] = [
   // 오늘 마감 업무
-  { id: 1, categoryId: 3, title: 'MS365 라이선스 갱신', assigneeId: 2, cycle: '연간', priority: '높음', dueDate: format(today, 'yyyy-MM-dd'), isChecked: false },
-  { id: 2, categoryId: 1, title: '사무실 책상 구매 검토', assigneeId: 1, cycle: '수시', priority: '보통', dueDate: format(today, 'yyyy-MM-dd'), isChecked: false },
-  { id: 3, categoryId: 9, title: '소방시설 월간 점검', assigneeId: 3, cycle: '매월', priority: '높음', dueDate: format(today, 'yyyy-MM-dd'), isChecked: true, checkedAt: format(today, 'yyyy-MM-dd HH:mm:ss'), checkedBy: 3 },
+  { id: 1, companyId: 1, categoryId: 3, title: 'MS365 라이선스 갱신', assigneeId: 2, cycle: '연간', priority: '높음', dueDate: format(today, 'yyyy-MM-dd'), isChecked: false },
+  { id: 2, companyId: 2, categoryId: 1, title: '사무실 책상 구매 검토', assigneeId: 1, cycle: '수시', priority: '보통', dueDate: format(today, 'yyyy-MM-dd'), isChecked: false },
+  { id: 3, companyId: 1, categoryId: 9, title: '소방시설 월간 점검', assigneeId: 3, cycle: '매월', priority: '높음', dueDate: format(today, 'yyyy-MM-dd'), isChecked: true, checkedAt: format(today, 'yyyy-MM-dd HH:mm:ss'), checkedBy: 3 },
 
   // 지연된 업무
-  { id: 4, categoryId: 7, title: '전기세 지출 결의', assigneeId: 1, cycle: '매월', priority: '높음', dueDate: format(subDays(today, 3), 'yyyy-MM-dd'), isChecked: false },
-  { id: 5, categoryId: 11, title: 'CCTV 점검 및 녹화 확인', assigneeId: 3, cycle: '매주', priority: '보통', dueDate: format(subDays(today, 1), 'yyyy-MM-dd'), isChecked: false },
-  { id: 6, categoryId: 4, title: '차량 정기 점검 (소렌티 1호차)', assigneeId: 3, cycle: '분기', priority: '높음', dueDate: format(subDays(today, 5), 'yyyy-MM-dd'), isChecked: false },
+  { id: 4, companyId: 3, categoryId: 7, title: '전기세 지출 결의', assigneeId: 1, cycle: '매월', priority: '높음', dueDate: format(subDays(today, 3), 'yyyy-MM-dd'), isChecked: false },
+  { id: 5, companyId: 2, categoryId: 11, title: 'CCTV 점검 및 녹화 확인', assigneeId: 3, cycle: '매주', priority: '보통', dueDate: format(subDays(today, 1), 'yyyy-MM-dd'), isChecked: false },
+  { id: 6, companyId: 1, categoryId: 4, title: '차량 정기 점검 (소렌티 1호차)', assigneeId: 3, cycle: '분기', priority: '높음', dueDate: format(subDays(today, 5), 'yyyy-MM-dd'), isChecked: false },
 
   // 내일 마감
-  { id: 7, categoryId: 2, title: '계약서 검토 및 날인', assigneeId: 1, cycle: '수시', priority: '높음', dueDate: format(addDays(today, 1), 'yyyy-MM-dd'), isChecked: false },
-  { id: 8, categoryId: 5, title: 'A4 용지 재고 확인 및 발주', assigneeId: 2, cycle: '매월', priority: '낮음', dueDate: format(addDays(today, 1), 'yyyy-MM-dd'), isChecked: false },
+  { id: 7, companyId: 4, categoryId: 2, title: '계약서 검토 및 날인', assigneeId: 1, cycle: '수시', priority: '높음', dueDate: format(addDays(today, 1), 'yyyy-MM-dd'), isChecked: false },
+  { id: 8, companyId: 2, categoryId: 5, title: 'A4 용지 재고 확인 및 발주', assigneeId: 2, cycle: '매월', priority: '낮음', dueDate: format(addDays(today, 1), 'yyyy-MM-dd'), isChecked: false },
 
   // 일주일 내
-  { id: 9, categoryId: 10, title: 'ISO 9001 내부 심사 준비', assigneeId: 1, cycle: '반기', priority: '높음', dueDate: format(addDays(today, 3), 'yyyy-MM-dd'), isChecked: false },
-  { id: 10, categoryId: 8, title: '냉난방기 필터 교체', assigneeId: 3, cycle: '분기', priority: '보통', dueDate: format(addDays(today, 5), 'yyyy-MM-dd'), isChecked: false },
-  { id: 11, categoryId: 6, title: '정수기 필터 교체', assigneeId: 3, cycle: '분기', priority: '보통', dueDate: format(addDays(today, 7), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(today, 'yyyy-MM-dd HH:mm:ss'), checkedBy: 3 },
+  { id: 9, companyId: 3, categoryId: 10, title: 'ISO 9001 내부 심사 준비', assigneeId: 1, cycle: '반기', priority: '높음', dueDate: format(addDays(today, 3), 'yyyy-MM-dd'), isChecked: false },
+  { id: 10, companyId: 1, categoryId: 8, title: '냉난방기 필터 교체', assigneeId: 3, cycle: '분기', priority: '보통', dueDate: format(addDays(today, 5), 'yyyy-MM-dd'), isChecked: false },
+  { id: 11, companyId: 5, categoryId: 6, title: '정수기 필터 교체', assigneeId: 3, cycle: '분기', priority: '보통', dueDate: format(addDays(today, 7), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(today, 'yyyy-MM-dd HH:mm:ss'), checkedBy: 3 },
 
   // 이번 달
-  { id: 12, categoryId: 12, title: '회의실 인테리어 공사 견적 검토', assigneeId: 1, cycle: '수시', priority: '낮음', dueDate: format(addDays(today, 10), 'yyyy-MM-dd'), isChecked: false },
-  { id: 13, categoryId: 14, title: '워크샵 장소 예약 및 준비', assigneeId: 2, cycle: '수시', priority: '보통', dueDate: format(addDays(today, 15), 'yyyy-MM-dd'), isChecked: false },
-  { id: 14, categoryId: 16, title: '11월 용역비 지출 결의', assigneeId: 1, cycle: '매월', priority: '높음', dueDate: format(addDays(today, 20), 'yyyy-MM-dd'), isChecked: false },
-  { id: 15, categoryId: 18, title: '화재보험 갱신 검토', assigneeId: 1, cycle: '연간', priority: '보통', dueDate: format(addDays(today, 25), 'yyyy-MM-dd'), isChecked: false },
+  { id: 12, companyId: 4, categoryId: 12, title: '회의실 인테리어 공사 견적 검토', assigneeId: 1, cycle: '수시', priority: '낮음', dueDate: format(addDays(today, 10), 'yyyy-MM-dd'), isChecked: false },
+  { id: 13, companyId: 1, categoryId: 14, title: '워크샵 장소 예약 및 준비', assigneeId: 2, cycle: '수시', priority: '보통', dueDate: format(addDays(today, 15), 'yyyy-MM-dd'), isChecked: false },
+  { id: 14, companyId: 2, categoryId: 16, title: '11월 용역비 지출 결의', assigneeId: 1, cycle: '매월', priority: '높음', dueDate: format(addDays(today, 20), 'yyyy-MM-dd'), isChecked: false },
+  { id: 15, companyId: 3, categoryId: 18, title: '화재보험 갱신 검토', assigneeId: 1, cycle: '연간', priority: '보통', dueDate: format(addDays(today, 25), 'yyyy-MM-dd'), isChecked: false },
 
   // 완료된 업무
-  { id: 16, categoryId: 3, title: '서버 백업 확인', assigneeId: 2, cycle: '매일', priority: '높음', dueDate: format(subDays(today, 1), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 1), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 2 },
-  { id: 17, categoryId: 5, title: '사무용품 발주', assigneeId: 2, cycle: '매월', priority: '낮음', dueDate: format(subDays(today, 2), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 2), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 2 },
-  { id: 18, categoryId: 15, title: '현장 소모품 재고 확인', assigneeId: 3, cycle: '매주', priority: '보통', dueDate: format(subDays(today, 3), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 3), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 3 },
-  { id: 19, categoryId: 17, title: '법인카드 사용 내역 정리', assigneeId: 1, cycle: '매월', priority: '보통', dueDate: format(subDays(today, 5), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 5), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 1 },
-  { id: 20, categoryId: 19, title: '용역 투입 현황 보고서 작성', assigneeId: 2, cycle: '매월', priority: '높음', dueDate: format(subDays(today, 7), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 7), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 2 },
+  { id: 16, companyId: 1, categoryId: 3, title: '서버 백업 확인', assigneeId: 2, cycle: '매일', priority: '높음', dueDate: format(subDays(today, 1), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 1), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 2 },
+  { id: 17, companyId: 2, categoryId: 5, title: '사무용품 발주', assigneeId: 2, cycle: '매월', priority: '낮음', dueDate: format(subDays(today, 2), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 2), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 2 },
+  { id: 18, companyId: 3, categoryId: 15, title: '현장 소모품 재고 확인', assigneeId: 3, cycle: '매주', priority: '보통', dueDate: format(subDays(today, 3), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 3), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 3 },
+  { id: 19, companyId: 4, categoryId: 17, title: '법인카드 사용 내역 정리', assigneeId: 1, cycle: '매월', priority: '보통', dueDate: format(subDays(today, 5), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 5), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 1 },
+  { id: 20, companyId: 2, categoryId: 19, title: '용역 투입 현황 보고서 작성', assigneeId: 2, cycle: '매월', priority: '높음', dueDate: format(subDays(today, 7), 'yyyy-MM-dd'), isChecked: true, checkedAt: format(subDays(today, 7), 'yyyy-MM-dd HH:mm:ss'), checkedBy: 2 },
 
   // 미래 업무
-  { id: 21, categoryId: 13, title: '부동산 임대차 계약 갱신 협의', assigneeId: 1, cycle: '연간', priority: '높음', dueDate: format(addDays(today, 30), 'yyyy-MM-dd'), isChecked: false },
-  { id: 22, categoryId: 20, title: 'CS 고객 불만 처리 프로세스 개선', assigneeId: 2, cycle: '수시', priority: '보통', dueDate: format(addDays(today, 45), 'yyyy-MM-dd'), isChecked: false },
-  { id: 23, categoryId: 21, title: '연말 정산 준비', assigneeId: 1, cycle: '연간', priority: '높음', dueDate: format(addDays(today, 60), 'yyyy-MM-dd'), isChecked: false },
+  { id: 21, companyId: 5, categoryId: 13, title: '부동산 임대차 계약 갱신 협의', assigneeId: 1, cycle: '연간', priority: '높음', dueDate: format(addDays(today, 30), 'yyyy-MM-dd'), isChecked: false },
+  { id: 22, companyId: 1, categoryId: 20, title: 'CS 고객 불만 처리 프로세스 개선', assigneeId: 2, cycle: '수시', priority: '보통', dueDate: format(addDays(today, 45), 'yyyy-MM-dd'), isChecked: false },
+  { id: 23, companyId: 3, categoryId: 21, title: '연말 정산 준비', assigneeId: 1, cycle: '연간', priority: '높음', dueDate: format(addDays(today, 60), 'yyyy-MM-dd'), isChecked: false },
 ];
 
 // 최근 활동 데이터

@@ -22,6 +22,7 @@ export interface Category {
 
 export interface Task {
   id: number;
+  companyId: number;
   categoryId: number;
   title: string;
   assigneeId: number;

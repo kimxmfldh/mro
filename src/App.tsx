@@ -46,6 +46,7 @@ function App() {
   };
 
   const handleSaveTask = (taskData: {
+    companyId: number;
     title: string;
     categoryId: number;
     assigneeId: number;

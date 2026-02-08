@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { categories, users } from '../data/mockData';
+import { categories, users, companies } from '../data/mockData';
 import { isOverdue, formatDate, getOverdueDays } from '../utils/date';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
@@ -66,6 +66,10 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
 
   const getCategoryColor = (categoryId: number) => {
     return categories.find((c) => c.id === categoryId)?.color || '#6B7280';
+  };
+
+  const getCompanyName = (companyId: number) => {
+    return companies.find((c) => c.id === companyId)?.name || '';
   };
 
   const categoryOptions = [
@@ -146,6 +150,7 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
               <tr className="border-b border-gray-200">
                 <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary w-12"></th>
                 <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">업무명</th>
+                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">업체</th>
                 <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">관리항목</th>
                 <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">담당자</th>
                 <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">마감일</th>
@@ -191,6 +196,11 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
                         >
                           {task.title}
                         </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <Badge color="#3B82F6">
+                          {getCompanyName(task.companyId)}
+                        </Badge>
                       </td>
                       <td className="py-3 px-4">
                         <Badge color={getCategoryColor(task.categoryId)}>

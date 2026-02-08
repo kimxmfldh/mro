@@ -3,7 +3,7 @@ import Modal from './common/Modal';
 import Input from './common/Input';
 import Select from './common/Select';
 import Button from './common/Button';
-import { categories, users } from '../data/mockData';
+import { categories, users, companies } from '../data/mockData';
 import { TaskCycle, TaskPriority } from '../types';
 import { format } from 'date-fns';
 
@@ -11,6 +11,7 @@ interface TaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (taskData: {
+    companyId: number;
     title: string;
     categoryId: number;
     assigneeId: number;
@@ -22,6 +23,7 @@ interface TaskModalProps {
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
+  const [companyId, setCompanyId] = useState<number>(1);
   const [title, setTitle] = useState('');
   const [categoryId, setCategoryId] = useState<number>(1);
   const [assigneeId, setAssigneeId] = useState<number>(1);
@@ -36,6 +38,10 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
     { value: '보통', color: '#F59E0B' },
     { value: '낮음', color: '#6B7280' },
   ];
+
+  const companySelectOptions = companies
+    .filter((c) => c.isActive)
+    .map((c) => ({ value: c.id, label: c.name }));
 
   const categorySelectOptions = categories
     .filter((c) => c.isActive)
@@ -52,6 +58,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
     }
 
     onSave({
+      companyId: Number(companyId),
       title: title.trim(),
       categoryId: Number(categoryId),
       assigneeId: Number(assigneeId),
@@ -62,6 +69,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
     });
 
     // Reset form
+    setCompanyId(1);
     setTitle('');
     setCategoryId(1);
     setAssigneeId(1);
@@ -72,6 +80,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
   };
 
   const handleClose = () => {
+    setCompanyId(1);
     setTitle('');
     setCategoryId(1);
     setAssigneeId(1);
@@ -85,6 +94,19 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="새 업무 등록">
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* 업체 */}
+        <div>
+          <label className="block text-sm font-medium text-text-primary mb-2">
+            관리 업체 <span className="text-danger">*</span>
+          </label>
+          <Select
+            value={companyId}
+            onChange={(val) => setCompanyId(Number(val))}
+            options={companySelectOptions}
+            className="w-full"
+          />
+        </div>
+
         {/* 업무명 */}
         <div>
           <label className="block text-sm font-medium text-text-primary mb-2">
