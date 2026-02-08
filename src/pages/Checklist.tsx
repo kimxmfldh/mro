@@ -106,13 +106,13 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
         <div className="flex items-center gap-3 flex-wrap">
           <Select
             value={selectedCategory}
-            onChange={setSelectedCategory}
+            onChange={(val) => setSelectedCategory(val as string)}
             options={categoryOptions}
             className="w-40"
           />
           <Select
             value={selectedAssignee}
-            onChange={setSelectedAssignee}
+            onChange={(val) => setSelectedAssignee(val as string)}
             options={userOptions}
             className="w-32"
           />

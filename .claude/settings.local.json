@@ -10,7 +10,8 @@
       "Bash(git commit:*)",
       "Bash(gh:*)",
       "Bash(git rm:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(MSYS_NO_PATHCONV=1 gh api:*)"
     ]
   }
 }

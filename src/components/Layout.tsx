@@ -93,7 +93,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentUser, onLogout }) => {
         </div>
       </header>
 
-      <Sidebar currentUser={currentUser} onLogout={onLogout} />
+      <Sidebar />
 
       {/* Main Content */}
       <div className="ml-60 mt-16">

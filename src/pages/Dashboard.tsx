@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { tasks, categories, users, recentActivities } from '../data/mockData';
+import React from 'react';
+import { categories, users, recentActivities } from '../data/mockData';
 import { isOverdue, getDDay, getOverdueDays } from '../utils/date';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';

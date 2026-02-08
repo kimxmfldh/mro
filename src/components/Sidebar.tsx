@@ -3,12 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, CheckSquare, Calendar, FolderKanban, BarChart3, Settings, ChevronDown } from 'lucide-react';
 import { companies } from '../data/mockData';
 
-interface SidebarProps {
-  currentUser?: { name: string; role: string };
-  onLogout: () => void;
-}
+interface SidebarProps {}
 
-const Sidebar: React.FC<SidebarProps> = ({ currentUser, onLogout }) => {
+const Sidebar: React.FC<SidebarProps> = () => {
   const location = useLocation();
   const [showCompanyMenu, setShowCompanyMenu] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(companies[0]);
