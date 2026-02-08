@@ -97,7 +97,7 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="h-full flex flex-col gap-6">
       {/* 필터 브레드크럼 */}
       <div className="flex items-center gap-2 flex-wrap">
         <button
@@ -163,8 +163,8 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
       </Card>
 
       {/* 업무 목록 테이블 */}
-      <Card className="overflow-hidden">
-        <div className="overflow-x-auto">
+      <Card className="flex-1 overflow-hidden flex flex-col">
+        <div className="flex-1 overflow-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-border">
@@ -278,7 +278,7 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
 
         {/* 페이지네이션 */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-6">
+          <div className="flex items-center justify-center gap-2 py-4 border-t border-border bg-gray-50">
             <Button
               variant="secondary"
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
