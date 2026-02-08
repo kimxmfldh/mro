@@ -4,7 +4,8 @@ import { isOverdue, getDDay, getOverdueDays } from '../utils/date';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
 import ProgressBar from '../components/common/ProgressBar';
-import { LayoutGrid, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import FilterModal from '../components/FilterModal';
+import { LayoutGrid, CheckCircle, Clock, AlertCircle, Filter, X } from 'lucide-react';
 import { Task } from '../types';
 
 interface DashboardProps {
@@ -13,12 +14,35 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
-  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    companies: [] as number[],
+    categories: [] as number[],
+    assignees: [] as number[],
+    statuses: [] as string[],
+    priorities: [] as string[],
+  });
 
   // 필터링된 업무
-  const filteredTasks = selectedCompanyId
-    ? allTasks.filter(t => t.companyId === selectedCompanyId)
-    : allTasks;
+  const filteredTasks = allTasks.filter((task) => {
+    if (filters.companies.length > 0 && !filters.companies.includes(task.companyId)) return false;
+    if (filters.categories.length > 0 && !filters.categories.includes(task.categoryId)) return false;
+    if (filters.assignees.length > 0 && !filters.assignees.includes(task.assigneeId)) return false;
+
+    if (filters.statuses.length > 0) {
+      const taskOverdue = isOverdue(task.dueDate, task.isChecked);
+      if (filters.statuses.includes('completed') && !task.isChecked) return false;
+      if (filters.statuses.includes('pending') && (task.isChecked || taskOverdue)) return false;
+      if (filters.statuses.includes('overdue') && !taskOverdue) return false;
+      if (!filters.statuses.includes('completed') && task.isChecked) return false;
+      if (!filters.statuses.includes('pending') && !task.isChecked && !taskOverdue) return false;
+      if (!filters.statuses.includes('overdue') && taskOverdue) return false;
+    }
+
+    if (filters.priorities.length > 0 && !filters.priorities.includes(task.priority)) return false;
+
+    return true;
+  });
 
   // 요약 통계
   const totalTasks = filteredTasks.length;
@@ -70,34 +94,87 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
     return companies.find((c) => c.id === companyId)?.name || '';
   };
 
+  const removeFilter = (type: string, value: number | string) => {
+    setFilters(prev => ({
+      ...prev,
+      [type]: prev[type as keyof typeof prev].filter((v: any) => v !== value)
+    }));
+  };
+
+  const hasActiveFilters =
+    filters.companies.length > 0 ||
+    filters.categories.length > 0 ||
+    filters.assignees.length > 0 ||
+    filters.statuses.length > 0 ||
+    filters.priorities.length > 0;
+
   return (
-    <div className="space-y-6">
-      {/* 필터 브레드크럼 */}
-      <div className="flex items-center gap-2 flex-wrap">
+    <div className="space-y-4">
+      {/* 필터 버튼 */}
+      <div className="flex items-center justify-end">
         <button
-          onClick={() => setSelectedCompanyId(null)}
-          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-            selectedCompanyId === null
-              ? 'bg-primary text-white'
-              : 'bg-white border border-border text-text-secondary hover:bg-gray-50'
+          onClick={() => setIsFilterModalOpen(true)}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border ${
+            hasActiveFilters
+              ? 'bg-primary text-white border-primary'
+              : 'bg-white text-text-secondary border-border hover:bg-gray-50'
           }`}
         >
-          전체 업체
+          <Filter size={18} />
+          필터
+          {hasActiveFilters && (
+            <span className="ml-1 px-1.5 py-0.5 bg-white/20 rounded text-xs">
+              {filters.companies.length + filters.categories.length + filters.assignees.length + filters.statuses.length + filters.priorities.length}
+            </span>
+          )}
         </button>
-        {companies.filter(c => c.isActive).map((company) => (
-          <button
-            key={company.id}
-            onClick={() => setSelectedCompanyId(selectedCompanyId === company.id ? null : company.id)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              selectedCompanyId === company.id
-                ? 'bg-primary text-white'
-                : 'bg-white border border-border text-text-secondary hover:bg-gray-50'
-            }`}
-          >
-            {company.name}
-          </button>
-        ))}
       </div>
+
+      {/* 선택된 필터 칩 */}
+      {hasActiveFilters && (
+        <div className="flex items-center gap-2 flex-wrap">
+          {filters.companies.map(id => (
+            <div key={`company-${id}`} className="flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary rounded-md text-sm">
+              <span>{getCompanyName(id)}</span>
+              <button onClick={() => removeFilter('companies', id)} className="hover:bg-primary/20 rounded">
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+          {filters.categories.map(id => (
+            <div key={`category-${id}`} className="flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary rounded-md text-sm">
+              <span>{getCategoryName(id)}</span>
+              <button onClick={() => removeFilter('categories', id)} className="hover:bg-primary/20 rounded">
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+          {filters.assignees.map(id => (
+            <div key={`assignee-${id}`} className="flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary rounded-md text-sm">
+              <span>{getUserName(id)}</span>
+              <button onClick={() => removeFilter('assignees', id)} className="hover:bg-primary/20 rounded">
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+          {filters.statuses.map(status => (
+            <div key={`status-${status}`} className="flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary rounded-md text-sm">
+              <span>{status === 'completed' ? '완료' : status === 'pending' ? '미완료' : '지연'}</span>
+              <button onClick={() => removeFilter('statuses', status)} className="hover:bg-primary/20 rounded">
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+          {filters.priorities.map(priority => (
+            <div key={`priority-${priority}`} className="flex items-center gap-1.5 px-2.5 py-1 bg-primary/10 text-primary rounded-md text-sm">
+              <span>{priority}</span>
+              <button onClick={() => removeFilter('priorities', priority)} className="hover:bg-primary/20 rounded">
+                <X size={14} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* 요약 카드 */}
       <div className="grid grid-cols-4 gap-6">
@@ -233,6 +310,14 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
           </div>
         </Card>
       </div>
+
+      {/* 필터 모달 */}
+      <FilterModal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)}
+        onApply={setFilters}
+        initialFilters={filters}
+      />
     </div>
   );
 };
