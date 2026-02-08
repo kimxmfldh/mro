@@ -118,13 +118,13 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
           />
           <Select
             value={selectedStatus}
-            onChange={setSelectedStatus}
+            onChange={(val) => setSelectedStatus(val as string)}
             options={statusOptions}
             className="w-32"
           />
           <Select
             value={selectedPriority}
-            onChange={setSelectedPriority}
+            onChange={(val) => setSelectedPriority(val as string)}
             options={priorityOptions}
             className="w-32"
           />
