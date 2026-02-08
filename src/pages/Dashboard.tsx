@@ -61,12 +61,6 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">대시보드</h1>
-        <p className="text-sm text-text-secondary mt-1">업무 현황을 한눈에 확인하세요</p>
-      </div>
-
       {/* 요약 카드 */}
       <div className="grid grid-cols-4 gap-6">
         {summaryCards.map((card) => (

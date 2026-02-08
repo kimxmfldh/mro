@@ -28,11 +28,6 @@ const Statistics: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">통계</h1>
-        <p className="text-sm text-text-secondary mt-1">업무 처리 현황과 통계를 확인합니다</p>
-      </div>
-
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="hover:shadow-md transition-shadow">

@@ -32,11 +32,6 @@ const Settings: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">설정</h1>
-        <p className="text-sm text-text-secondary mt-1">시스템 설정을 관리합니다</p>
-      </div>
-
       {/* Settings Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {settingSections.map((section) => (

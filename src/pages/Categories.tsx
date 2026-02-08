@@ -6,13 +6,6 @@ import Badge from '../components/common/Badge';
 const Categories: React.FC = () => {
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">관리항목</h1>
-          <p className="text-sm text-text-secondary mt-1">업무를 분류하는 관리 항목을 관리합니다</p>
-        </div>
-      </div>
-
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {categories.map((category) => (

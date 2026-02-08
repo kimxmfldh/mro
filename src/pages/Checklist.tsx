@@ -95,12 +95,8 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-text-primary">체크리스트</h1>
-          <p className="text-sm text-text-secondary mt-1">모든 업무를 관리하고 추적하세요</p>
-        </div>
+      {/* Action Bar */}
+      <div className="flex items-center justify-end">
         <Button variant="primary" onClick={onOpenTaskModal}>
           <Plus size={18} className="mr-2" />
           새 업무
