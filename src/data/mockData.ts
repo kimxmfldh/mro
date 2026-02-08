@@ -1,5 +1,14 @@
-import { User, Category, Task, Activity } from '../types';
+import { User, Category, Task, Activity, Company } from '../types';
 import { format, subDays, addDays } from 'date-fns';
+
+// 업체 데이터
+export const companies: Company[] = [
+  { id: 1, name: '소렌티(주)', code: 'SRT', industry: '물류/유통', isActive: true },
+  { id: 2, name: 'HK세미텍', code: 'HKS', industry: '제조', isActive: true },
+  { id: 3, name: '케이엠테크', code: 'KMT', industry: 'IT/서비스', isActive: true },
+  { id: 4, name: '대한물산', code: 'DHS', industry: '무역', isActive: true },
+  { id: 5, name: '신성엔지니어링', code: 'SSE', industry: '건설/엔지니어링', isActive: true },
+];
 
 // 사용자 데이터
 export const users: User[] = [

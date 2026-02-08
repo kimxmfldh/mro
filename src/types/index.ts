@@ -41,3 +41,11 @@ export interface Activity {
   taskTitle: string;
   timestamp: string;
 }
+
+export interface Company {
+  id: number;
+  name: string;
+  code: string;
+  industry: string;
+  isActive: boolean;
+}

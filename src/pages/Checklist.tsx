@@ -6,7 +6,6 @@ import Badge from '../components/common/Badge';
 import Button from '../components/common/Button';
 import Select from '../components/common/Select';
 import Input from '../components/common/Input';
-import { Plus } from 'lucide-react';
 import { Task } from '../types';
 
 interface ChecklistProps {
@@ -98,7 +97,6 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
       {/* Action Bar */}
       <div className="flex items-center justify-end">
         <Button variant="primary" onClick={onOpenTaskModal}>
-          <Plus size={18} className="mr-2" />
           새 업무
         </Button>
       </div>
