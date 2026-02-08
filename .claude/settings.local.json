@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout 5 tail:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(gh:*)",
+      "Bash(git rm:*)",
+      "Bash(git push:*)",
+      "Bash(MSYS_NO_PATHCONV=1 gh api:*)",
+      "WebFetch(domain:kimxmfldh.github.io)"
+    ]
+  }
+}
