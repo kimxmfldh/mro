@@ -4,7 +4,7 @@ import { isOverdue, getDDay, getOverdueDays } from '../utils/date';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
 import ProgressBar from '../components/common/ProgressBar';
-import { LayoutGrid, CheckCircle, Clock, AlertCircle, ChevronRight } from 'lucide-react';
+import { LayoutGrid, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { Task } from '../types';
 
 interface DashboardProps {
@@ -85,23 +85,17 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
           전체 업체
         </button>
         {companies.filter(c => c.isActive).map((company) => (
-          <React.Fragment key={company.id}>
-            {(selectedCompanyId === null || selectedCompanyId === company.id) && (
-              <>
-                <ChevronRight size={16} className="text-text-tertiary" />
-                <button
-                  onClick={() => setSelectedCompanyId(selectedCompanyId === company.id ? null : company.id)}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    selectedCompanyId === company.id
-                      ? 'bg-primary text-white'
-                      : 'bg-white border border-border text-text-secondary hover:bg-gray-50'
-                  }`}
-                >
-                  {company.name}
-                </button>
-              </>
-            )}
-          </React.Fragment>
+          <button
+            key={company.id}
+            onClick={() => setSelectedCompanyId(selectedCompanyId === company.id ? null : company.id)}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              selectedCompanyId === company.id
+                ? 'bg-primary text-white'
+                : 'bg-white border border-border text-text-secondary hover:bg-gray-50'
+            }`}
+          >
+            {company.name}
+          </button>
         ))}
       </div>
 
@@ -125,8 +119,8 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
       {/* 중앙 영역 */}
       <div className="grid grid-cols-2 gap-6">
         {/* 관리항목별 진행률 */}
-        <Card title="관리항목별 진행률" className="h-[500px] overflow-y-auto">
-          <div className="space-y-4">
+        <Card title="관리항목별 진행률" className="h-[400px]">
+          <div className="space-y-4 h-[calc(100%-2rem)] overflow-y-auto pr-2">
             {categoryProgress.map((item) => (
               <div key={item.category.id}>
                 <div className="flex items-center justify-between mb-2">
@@ -150,11 +144,11 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
         </Card>
 
         {/* 오늘의 업무 */}
-        <Card title="오늘의 업무" className="h-[500px] overflow-y-auto">
+        <Card title="오늘의 업무" className="h-[400px]">
           {todayTasks.length === 0 ? (
             <p className="text-text-secondary text-center py-8">오늘 마감인 업무가 없습니다.</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-3 h-[calc(100%-2rem)] overflow-y-auto pr-2">
               {todayTasks.map((task) => (
                 <div
                   key={task.id}
@@ -190,11 +184,11 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
       {/* 하단 영역 */}
       <div className="grid grid-cols-2 gap-6">
         {/* 지연 경고 */}
-        <Card title="지연 경고" className="h-[300px] overflow-y-auto">
+        <Card title="지연 경고" className="h-[280px]">
           {overdueTasksList.length === 0 ? (
             <p className="text-text-secondary text-center py-8">지연된 업무가 없습니다.</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-3 h-[calc(100%-2rem)] overflow-y-auto pr-2">
               {overdueTasksList.map((task) => (
                 <div
                   key={task.id}
@@ -221,8 +215,8 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
         </Card>
 
         {/* 최근 활동 */}
-        <Card title="최근 활동" className="h-[300px] overflow-y-auto">
-          <div className="space-y-4">
+        <Card title="최근 활동" className="h-[280px]">
+          <div className="space-y-4 h-[calc(100%-2rem)] overflow-y-auto pr-2">
             {recentActivities.map((activity) => (
               <div key={activity.id} className="flex items-start">
                 <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />

@@ -47,9 +47,9 @@ const Layout: React.FC<LayoutProps> = ({ children, currentUser, onLogout }) => {
       <Sidebar currentUser={currentUser} onLogout={onLogout} />
 
       {/* Main Content */}
-      <div className="ml-60 mt-16">
+      <div className="ml-60 mt-16 h-[calc(100vh-4rem)] overflow-hidden">
         {/* Page Content */}
-        <div className="p-8 min-h-[calc(100vh-4rem)]">
+        <div className="p-8 h-full overflow-y-auto">
           {children}
         </div>
       </div>
