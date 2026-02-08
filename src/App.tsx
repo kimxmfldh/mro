@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -66,17 +66,17 @@ function App() {
 
   if (!isLoggedIn) {
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Layout
         currentUser={
           currentUser
@@ -115,7 +115,7 @@ function App() {
           onSave={handleSaveTask}
         />
       </Layout>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
