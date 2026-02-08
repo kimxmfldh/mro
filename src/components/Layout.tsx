@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Sidebar from './Sidebar';
-import { ChevronDown } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -9,7 +8,6 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, currentUser, onLogout }) => {
-  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <div className="min-h-screen bg-bg-main">
@@ -24,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentUser, onLogout }) => {
             <h1 className="text-lg font-bold text-text-primary">MRO 시스템</h1>
           </div>
 
-          {/* Right Section - Search & User */}
+          {/* Right Section - Search & Notification */}
           <div className="flex items-center gap-4">
             {/* Search Bar */}
             <div className="w-96">
@@ -42,58 +40,11 @@ const Layout: React.FC<LayoutProps> = ({ children, currentUser, onLogout }) => {
                 3
               </span>
             </button>
-
-            {/* User Profile */}
-            {currentUser && (
-              <div className="relative">
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-2 px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center">
-                    <span className="text-white font-medium text-sm">
-                      {currentUser.name.charAt(0)}
-                    </span>
-                  </div>
-                  <div className="text-left">
-                    <p className="text-sm font-medium text-text-primary">{currentUser.name}</p>
-                  </div>
-                  <ChevronDown size={16} className="text-text-secondary" />
-                </button>
-
-                {/* Dropdown Menu */}
-                {showUserMenu && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setShowUserMenu(false)}
-                    />
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-border rounded-lg shadow-lg z-20">
-                      <div className="p-2">
-                        <div className="px-3 py-2 border-b border-border mb-2">
-                          <p className="text-sm font-medium text-text-primary">{currentUser.name}</p>
-                          <p className="text-xs text-text-secondary mt-0.5">{currentUser.role}</p>
-                        </div>
-                        <button
-                          onClick={() => {
-                            setShowUserMenu(false);
-                            onLogout();
-                          }}
-                          className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:bg-gray-50 hover:text-text-primary rounded-md transition-colors"
-                        >
-                          로그아웃
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
           </div>
         </div>
       </header>
 
-      <Sidebar />
+      <Sidebar currentUser={currentUser} onLogout={onLogout} />
 
       {/* Main Content */}
       <div className="ml-60 mt-16">

@@ -12,7 +12,9 @@
       "Bash(git rm:*)",
       "Bash(git push:*)",
       "Bash(MSYS_NO_PATHCONV=1 gh api:*)",
-      "WebFetch(domain:kimxmfldh.github.io)"
+      "WebFetch(domain:kimxmfldh.github.io)",
+      "Bash(npm run build:*)",
+      "Bash(npm run deploy:*)"
     ]
   }
 }

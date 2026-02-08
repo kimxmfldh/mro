@@ -1,10 +1,9 @@
 import React from 'react';
-import { categories, users, recentActivities } from '../data/mockData';
+import { categories, users, companies } from '../data/mockData';
 import { isOverdue, getDDay, getOverdueDays } from '../utils/date';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
-import ProgressBar from '../components/common/ProgressBar';
-import { LayoutGrid, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { Building2, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 import { Task } from '../types';
 
 interface DashboardProps {
@@ -13,39 +12,6 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
-  // 요약 통계
-  const totalTasks = allTasks.length;
-  const completedTasks = allTasks.filter((t) => t.isChecked).length;
-  const pendingTasks = allTasks.filter((t) => !t.isChecked).length;
-  const overdueTasks = allTasks.filter((t) => isOverdue(t.dueDate, t.isChecked)).length;
-
-  // 오늘의 업무
-  const todayTasks = allTasks.filter((t) => getDDay(t.dueDate) === 0);
-
-  // 지연된 업무
-  const overdueTasksList = allTasks.filter((t) => isOverdue(t.dueDate, t.isChecked));
-
-  // 관리항목별 진행률
-  const categoryProgress = categories.map((cat) => {
-    const catTasks = allTasks.filter((t) => t.categoryId === cat.id);
-    const catCompleted = catTasks.filter((t) => t.isChecked).length;
-    const catTotal = catTasks.length;
-    const percentage = catTotal > 0 ? (catCompleted / catTotal) * 100 : 0;
-
-    return {
-      category: cat,
-      completed: catCompleted,
-      total: catTotal,
-      percentage,
-    };
-  });
-
-  const summaryCards = [
-    { title: '전체 업무', value: totalTasks, icon: LayoutGrid, color: 'bg-gray-700' },
-    { title: '완료', value: completedTasks, icon: CheckCircle, color: 'bg-success' },
-    { title: '미완료', value: pendingTasks, icon: Clock, color: 'bg-gray-500' },
-    { title: '지연', value: overdueTasks, icon: AlertCircle, color: 'bg-danger' },
-  ];
 
   const getCategoryName = (categoryId: number) => {
     return categories.find((c) => c.id === categoryId)?.name || '';
@@ -60,139 +26,154 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* 요약 카드 */}
-      <div className="grid grid-cols-4 gap-6">
-        {summaryCards.map((card) => (
-          <Card key={card.title} className="relative overflow-hidden hover:shadow-md transition-all">
-            <div className="flex items-center justify-between">
+    <div className="space-y-8">
+      {/* 업체별 섹션 */}
+      {companies.filter(c => c.isActive).map((company) => {
+        // 각 업체별 업무 필터링 (실제로는 업무에 companyId가 있어야 하지만, 데모용으로 업무를 나눠서 표시)
+        const companyTasksCount = Math.floor(allTasks.length / companies.filter(c => c.isActive).length);
+        const startIdx = (company.id - 1) * companyTasksCount;
+        const companyTasks = allTasks.slice(startIdx, startIdx + companyTasksCount);
+
+        const totalTasks = companyTasks.length;
+        const completedTasks = companyTasks.filter((t) => t.isChecked).length;
+        const pendingTasks = companyTasks.filter((t) => !t.isChecked).length;
+        const overdueTasks = companyTasks.filter((t) => isOverdue(t.dueDate, t.isChecked)).length;
+        const todayTasks = companyTasks.filter((t) => getDDay(t.dueDate) === 0);
+        const overdueTasksList = companyTasks.filter((t) => isOverdue(t.dueDate, t.isChecked));
+
+        return (
+          <div key={company.id} className="space-y-6">
+            {/* 업체 헤더 */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
+                <Building2 size={20} className="text-white" />
+              </div>
               <div>
-                <p className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">{card.title}</p>
-                <p className="text-3xl font-bold text-text-primary">{card.value}</p>
-              </div>
-              <div className={`${card.color} p-3 rounded-xl`}>
-                <card.icon size={20} className="text-white" />
+                <h2 className="text-xl font-bold text-text-primary">{company.name}</h2>
+                <p className="text-sm text-text-secondary">{company.industry}</p>
               </div>
             </div>
-          </Card>
-        ))}
-      </div>
 
-      {/* 중앙 영역 */}
-      <div className="grid grid-cols-2 gap-6">
-        {/* 관리항목별 진행률 */}
-        <Card title="관리항목별 진행률" className="h-[500px] overflow-y-auto">
-          <div className="space-y-4">
-            {categoryProgress.map((item) => (
-              <div key={item.category.id}>
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center">
-                    <div
-                      className="w-3 h-3 rounded-full mr-2"
-                      style={{ backgroundColor: item.category.color }}
-                    />
-                    <span className="text-sm font-medium text-text-primary">
-                      {item.category.name}
-                    </span>
+            {/* 요약 카드 */}
+            <div className="grid grid-cols-4 gap-4">
+              <Card className="hover:shadow-md transition-all">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">전체</p>
+                    <p className="text-2xl font-bold text-text-primary">{totalTasks}</p>
                   </div>
-                  <span className="text-sm text-text-secondary">
-                    {item.completed}/{item.total}
-                  </span>
-                </div>
-                <ProgressBar value={item.percentage} color={item.category.color} />
-              </div>
-            ))}
-          </div>
-        </Card>
-
-        {/* 오늘의 업무 */}
-        <Card title="오늘의 업무" className="h-[500px] overflow-y-auto">
-          {todayTasks.length === 0 ? (
-            <p className="text-text-secondary text-center py-8">오늘 마감인 업무가 없습니다.</p>
-          ) : (
-            <div className="space-y-3">
-              {todayTasks.map((task) => (
-                <div
-                  key={task.id}
-                  className="flex items-start p-3 border border-border rounded-lg hover:border-gray-300 transition-all"
-                >
-                  <input
-                    type="checkbox"
-                    checked={task.isChecked}
-                    onChange={() => onToggleTask(task.id)}
-                    className="mt-1 mr-3 w-4 h-4 text-primary focus:ring-primary border-border rounded"
-                  />
-                  <div className="flex-1">
-                    <p className={`text-sm font-medium ${task.isChecked ? 'line-through text-text-secondary' : 'text-text-primary'}`}>
-                      {task.title}
-                    </p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Badge color={getCategoryColor(task.categoryId)}>
-                        {getCategoryName(task.categoryId)}
-                      </Badge>
-                      <span className="text-xs text-text-secondary">
-                        {getUserName(task.assigneeId)}
-                      </span>
-                    </div>
+                  <div className="bg-gray-100 p-2.5 rounded-lg">
+                    <Clock size={18} className="text-text-secondary" />
                   </div>
                 </div>
-              ))}
+              </Card>
+              <Card className="hover:shadow-md transition-all">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">완료</p>
+                    <p className="text-2xl font-bold text-success">{completedTasks}</p>
+                  </div>
+                  <div className="bg-success/10 p-2.5 rounded-lg">
+                    <CheckCircle size={18} className="text-success" />
+                  </div>
+                </div>
+              </Card>
+              <Card className="hover:shadow-md transition-all">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">미완료</p>
+                    <p className="text-2xl font-bold text-text-primary">{pendingTasks}</p>
+                  </div>
+                  <div className="bg-gray-100 p-2.5 rounded-lg">
+                    <Clock size={18} className="text-text-secondary" />
+                  </div>
+                </div>
+              </Card>
+              <Card className="hover:shadow-md transition-all">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-medium text-text-secondary mb-2 uppercase tracking-wide">지연</p>
+                    <p className="text-2xl font-bold text-danger">{overdueTasks}</p>
+                  </div>
+                  <div className="bg-danger/10 p-2.5 rounded-lg">
+                    <AlertCircle size={18} className="text-danger" />
+                  </div>
+                </div>
+              </Card>
             </div>
-          )}
-        </Card>
-      </div>
 
-      {/* 하단 영역 */}
-      <div className="grid grid-cols-2 gap-6">
-        {/* 지연 경고 */}
-        <Card title="지연 경고" className="h-[300px] overflow-y-auto">
-          {overdueTasksList.length === 0 ? (
-            <p className="text-text-secondary text-center py-8">지연된 업무가 없습니다.</p>
-          ) : (
-            <div className="space-y-3">
-              {overdueTasksList.map((task) => (
-                <div
-                  key={task.id}
-                  className="p-3 bg-red-50 border border-red-200 rounded-lg"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-text-primary">{task.title}</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge color={getCategoryColor(task.categoryId)}>
-                          {getCategoryName(task.categoryId)}
-                        </Badge>
-                        <span className="text-xs text-danger font-semibold">
-                          {getOverdueDays(task.dueDate)}일 지연
-                        </span>
+            {/* 업무 현황 */}
+            <div className="grid grid-cols-2 gap-6">
+              {/* 오늘의 업무 */}
+              <Card title="오늘의 업무">
+                {todayTasks.length === 0 ? (
+                  <p className="text-text-secondary text-center py-4 text-sm">오늘 마감인 업무가 없습니다.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {todayTasks.slice(0, 3).map((task) => (
+                      <div
+                        key={task.id}
+                        className="flex items-start p-2.5 border border-border rounded-lg hover:border-gray-300 transition-all"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={task.isChecked}
+                          onChange={() => onToggleTask(task.id)}
+                          className="mt-1 mr-2.5 w-4 h-4 text-primary focus:ring-primary border-border rounded"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-sm font-medium truncate ${task.isChecked ? 'line-through text-text-secondary' : 'text-text-primary'}`}>
+                            {task.title}
+                          </p>
+                          <div className="flex items-center gap-2 mt-1.5">
+                            <Badge color={getCategoryColor(task.categoryId)}>
+                              {getCategoryName(task.categoryId)}
+                            </Badge>
+                            <span className="text-xs text-text-secondary">
+                              {getUserName(task.assigneeId)}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ))}
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </Card>
+                )}
+              </Card>
 
-        {/* 최근 활동 */}
-        <Card title="최근 활동" className="h-[300px] overflow-y-auto">
-          <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div key={activity.id} className="flex items-start">
-                <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
-                <div className="flex-1">
-                  <p className="text-sm text-text-primary">
-                    <span className="font-medium">{activity.userName}</span>님이{' '}
-                    <span className="font-medium">{activity.taskTitle}</span> 업무를{' '}
-                    <span className="text-primary font-medium">{activity.action}</span>했습니다.
-                  </p>
-                  <p className="text-xs text-text-secondary mt-1">{activity.timestamp}</p>
-                </div>
-              </div>
-            ))}
+              {/* 지연 경고 */}
+              <Card title="지연 경고">
+                {overdueTasksList.length === 0 ? (
+                  <p className="text-text-secondary text-center py-4 text-sm">지연된 업무가 없습니다.</p>
+                ) : (
+                  <div className="space-y-2">
+                    {overdueTasksList.slice(0, 3).map((task) => (
+                      <div
+                        key={task.id}
+                        className="p-2.5 bg-red-50 border border-red-200 rounded-lg"
+                      >
+                        <p className="text-sm font-medium text-text-primary truncate">{task.title}</p>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <Badge color={getCategoryColor(task.categoryId)}>
+                            {getCategoryName(task.categoryId)}
+                          </Badge>
+                          <span className="text-xs text-danger font-semibold">
+                            {getOverdueDays(task.dueDate)}일 지연
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Card>
+            </div>
+
+            {/* 구분선 */}
+            {company.id < companies.filter(c => c.isActive).length && (
+              <div className="border-t border-border my-8"></div>
+            )}
           </div>
-        </Card>
-      </div>
+        );
+      })}
     </div>
   );
 };

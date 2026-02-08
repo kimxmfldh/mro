@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, CheckSquare, Calendar, FolderKanban, BarChart3, Settings, ChevronDown } from 'lucide-react';
-import { companies } from '../data/mockData';
 
-interface SidebarProps {}
+interface SidebarProps {
+  currentUser?: { name: string; role: string };
+  onLogout: () => void;
+}
 
-const Sidebar: React.FC<SidebarProps> = () => {
+const Sidebar: React.FC<SidebarProps> = ({ currentUser, onLogout }) => {
   const location = useLocation();
-  const [showCompanyMenu, setShowCompanyMenu] = useState(false);
-  const [selectedCompany, setSelectedCompany] = useState(companies[0]);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: '대시보드' },
@@ -23,58 +24,6 @@ const Sidebar: React.FC<SidebarProps> = () => {
 
   return (
     <div className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-60 bg-bg-sidebar border-r border-border flex flex-col">
-      {/* Company Selector */}
-      <div className="px-3 pt-4 pb-3 border-b border-border">
-        <div className="relative">
-          <button
-            onClick={() => setShowCompanyMenu(!showCompanyMenu)}
-            className="w-full flex items-center justify-between px-3 py-2.5 bg-white hover:bg-gray-50 border border-border rounded-lg transition-colors"
-          >
-            <div className="text-left flex-1">
-              <p className="text-xs text-text-tertiary mb-0.5">관리 업체</p>
-              <p className="text-sm font-semibold text-text-primary truncate">{selectedCompany.name}</p>
-            </div>
-            <ChevronDown size={16} className="text-text-secondary flex-shrink-0 ml-2" />
-          </button>
-
-          {/* Company Dropdown */}
-          {showCompanyMenu && (
-            <>
-              <div
-                className="fixed inset-0 z-10"
-                onClick={() => setShowCompanyMenu(false)}
-              />
-              <div className="absolute left-0 right-0 mt-2 bg-white border border-border rounded-lg shadow-xl z-20 max-h-80 overflow-y-auto">
-                <div className="p-2">
-                  {companies.filter(c => c.isActive).map((company) => (
-                    <button
-                      key={company.id}
-                      onClick={() => {
-                        setSelectedCompany(company);
-                        setShowCompanyMenu(false);
-                      }}
-                      className={`w-full text-left px-3 py-2.5 rounded-md transition-colors ${
-                        selectedCompany.id === company.id
-                          ? 'bg-primary/10 text-primary font-medium'
-                          : 'hover:bg-gray-50 text-text-primary'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium truncate">{company.name}</p>
-                          <p className="text-xs text-text-secondary truncate">{company.industry}</p>
-                        </div>
-                        <span className="text-xs font-mono text-text-tertiary ml-2">{company.code}</span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4">
         <ul className="space-y-0.5">
@@ -103,6 +52,52 @@ const Sidebar: React.FC<SidebarProps> = () => {
           ))}
         </ul>
       </nav>
+
+      {/* User Profile */}
+      <div className="p-3 border-t border-border">
+        {currentUser && (
+          <div className="relative">
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
+              className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <div className="w-9 h-9 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-medium text-sm">
+                  {currentUser.name.charAt(0)}
+                </span>
+              </div>
+              <div className="text-left flex-1 min-w-0">
+                <p className="text-sm font-medium text-text-primary truncate">{currentUser.name}</p>
+                <p className="text-xs text-text-secondary">{currentUser.role}</p>
+              </div>
+              <ChevronDown size={16} className="text-text-secondary flex-shrink-0" />
+            </button>
+
+            {/* User Dropdown */}
+            {showUserMenu && (
+              <>
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setShowUserMenu(false)}
+                />
+                <div className="absolute bottom-full left-3 right-3 mb-2 bg-white border border-border rounded-lg shadow-lg z-20">
+                  <div className="p-2">
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        onLogout();
+                      }}
+                      className="w-full text-left px-3 py-2 text-sm text-text-secondary hover:bg-gray-50 hover:text-text-primary rounded-md transition-colors"
+                    >
+                      로그아웃
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
