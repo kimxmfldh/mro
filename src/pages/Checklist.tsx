@@ -98,11 +98,31 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
 
   return (
     <div className="space-y-6">
-      {/* Action Bar */}
-      <div className="flex items-center justify-end">
-        <Button variant="primary" onClick={onOpenTaskModal}>
-          새 업무
-        </Button>
+      {/* 필터 브레드크럼 */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <button
+          onClick={() => setSelectedCategory('')}
+          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+            !selectedCategory
+              ? 'bg-primary text-white'
+              : 'bg-white border border-border text-text-secondary hover:bg-gray-50'
+          }`}
+        >
+          전체
+        </button>
+        {categoryOptions.slice(1).map((option) => (
+          <button
+            key={option.value}
+            onClick={() => setSelectedCategory(option.value.toString())}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              selectedCategory === option.value.toString()
+                ? 'bg-primary text-white'
+                : 'bg-white border border-border text-text-secondary hover:bg-gray-50'
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
 
       {/* 필터바 */}
@@ -143,26 +163,26 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
       </Card>
 
       {/* 업무 목록 테이블 */}
-      <Card>
+      <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary w-12"></th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">업무명</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">업체</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">관리항목</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">담당자</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">마감일</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">주기</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">우선순위</th>
-                <th className="text-left py-3 px-4 text-sm font-semibold text-text-primary">상태</th>
+              <tr className="border-b border-border">
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider w-12"></th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">업무명</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">업체</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">관리항목</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">담당자</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">마감일</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">주기</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">우선순위</th>
+                <th className="text-left py-3 px-4 text-xs font-semibold text-text-tertiary uppercase tracking-wider">상태</th>
               </tr>
             </thead>
             <tbody>
               {paginatedTasks.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="text-center py-8 text-text-secondary">
+                  <td colSpan={9} className="text-center py-12 text-text-secondary text-sm">
                     조건에 맞는 업무가 없습니다.
                   </td>
                 </tr>
@@ -174,8 +194,8 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
                   return (
                     <tr
                       key={task.id}
-                      className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${
-                        task.isChecked ? 'bg-gray-50' : ''
+                      className={`border-b border-border hover:bg-gray-50 transition-colors cursor-pointer ${
+                        task.isChecked ? 'bg-gray-50/50' : ''
                       }`}
                     >
                       <td className="py-3 px-4">
@@ -240,6 +260,18 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
                   );
                 })
               )}
+              {/* 업무 추가 행 */}
+              <tr className="border-t-2 border-border hover:bg-gray-50 transition-colors">
+                <td colSpan={9} className="py-3 px-4">
+                  <button
+                    onClick={onOpenTaskModal}
+                    className="w-full text-left text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2"
+                  >
+                    <span className="text-lg font-light">+</span>
+                    <span>업무 추가</span>
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
