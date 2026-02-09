@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import Card from '../components/common/Card';
-import Badge from '../components/common/Badge';
 import { companies, categories } from '../data/mockData';
 import { Task } from '../types';
 import { format, startOfMonth, endOfMonth } from 'date-fns';
