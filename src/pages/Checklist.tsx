@@ -4,6 +4,7 @@ import { isOverdue, formatDate, getOverdueDays } from '../utils/date';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
 import FilterModal from '../components/FilterModal';
+import ContextMenu from '../components/ContextMenu';
 import { Filter, X } from 'lucide-react';
 import { Task } from '../types';
 
@@ -17,6 +18,7 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
   const [searchKeyword, setSearchKeyword] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; taskId: number } | null>(null);
   const [filters, setFilters] = useState({
     companies: [] as number[],
     categories: [] as number[],
@@ -95,6 +97,21 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
     filters.assignees.length > 0 ||
     filters.statuses.length > 0 ||
     filters.priorities.length > 0;
+
+  const handleContextMenu = (e: React.MouseEvent, taskId: number) => {
+    e.preventDefault();
+    setContextMenu({ x: e.clientX, y: e.clientY, taskId });
+  };
+
+  const handleEdit = (taskId: number) => {
+    alert(`업무 ID ${taskId} 수정 기능은 준비 중입니다.`);
+  };
+
+  const handleDelete = (taskId: number) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      alert(`업무 ID ${taskId} 삭제 기능은 준비 중입니다.`);
+    }
+  };
 
   return (
     <div className="h-full flex flex-col gap-4">
@@ -205,6 +222,7 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
                   return (
                     <tr
                       key={task.id}
+                      onContextMenu={(e) => handleContextMenu(e, task.id)}
                       className={`border-b border-border hover:bg-gray-50 transition-colors cursor-pointer ${
                         task.isChecked ? 'bg-gray-50/50' : ''
                       }`}
@@ -320,6 +338,17 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
         onApply={setFilters}
         initialFilters={filters}
       />
+
+      {/* 컨텍스트 메뉴 */}
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onEdit={() => handleEdit(contextMenu.taskId)}
+          onDelete={() => handleDelete(contextMenu.taskId)}
+          onClose={() => setContextMenu(null)}
+        />
+      )}
     </div>
   );
 };
