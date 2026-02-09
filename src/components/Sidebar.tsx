@@ -29,7 +29,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentUser, onLogout }) => {
         <ul className="space-y-0.5">
           {menuItems.map((item) => (
             <li key={item.path}>
-              {item.disabled ? (
+              {item.disabled === true ? (
                 <div className="flex items-center px-3 py-2 rounded-md text-text-tertiary cursor-not-allowed">
                   <item.icon size={18} className="mr-3 flex-shrink-0" />
                   <span className="text-sm flex-1">{item.label}</span>

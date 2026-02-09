@@ -3,7 +3,7 @@ import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addM
 import { ko } from 'date-fns/locale';
 import Card from '../components/common/Card';
 import Badge from '../components/common/Badge';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Task } from '../types';
 import { categories, companies, users } from '../data/mockData';
 import { isOverdue } from '../utils/date';
