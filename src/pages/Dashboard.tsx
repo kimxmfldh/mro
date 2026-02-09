@@ -146,7 +146,6 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
             </div>
           )}
         </Card>
-      </div>
 
         {/* 좌하: 지연 경고 */}
         <Card title="지연 경고" className="flex flex-col">
