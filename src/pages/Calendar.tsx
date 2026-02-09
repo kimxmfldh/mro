@@ -11,9 +11,10 @@ import { isOverdue } from '../utils/date';
 interface CalendarProps {
   tasks: Task[];
   onToggleTask: (taskId: number) => void;
+  onEditTask: (taskId: number) => void;
 }
 
-const Calendar: React.FC<CalendarProps> = ({ tasks, onToggleTask }) => {
+const Calendar: React.FC<CalendarProps> = ({ tasks, onToggleTask, onEditTask }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -189,13 +190,17 @@ const Calendar: React.FC<CalendarProps> = ({ tasks, onToggleTask }) => {
               {selectedDateTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3 border border-border rounded-lg hover:border-gray-300 transition-all"
+                  className="p-3 border border-border rounded-lg hover:border-primary hover:shadow-sm transition-all cursor-pointer group"
+                  onClick={() => onEditTask(task.id)}
                 >
                   <div className="flex items-start gap-2">
                     <input
                       type="checkbox"
                       checked={task.isChecked}
-                      onChange={() => onToggleTask(task.id)}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        onToggleTask(task.id);
+                      }}
                       className="mt-1 w-4 h-4 text-primary focus:ring-primary border-border rounded"
                     />
                     <div className="flex-1 min-w-0">

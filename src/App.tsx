@@ -196,7 +196,13 @@ function App() {
           />
           <Route
             path="/calendar"
-            element={<Calendar tasks={tasks} onToggleTask={handleToggleTask} />}
+            element={
+              <Calendar
+                tasks={tasks}
+                onToggleTask={handleToggleTask}
+                onEditTask={handleEditTask}
+              />
+            }
           />
           <Route
             path="/categories"
