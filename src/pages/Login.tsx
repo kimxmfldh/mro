@@ -105,9 +105,57 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </div>
         </div>
 
-        {/* Right Side - Branding */}
-        <div className="w-1/2 bg-gradient-to-br from-[#0070d2] to-[#005fb2] flex items-center justify-center p-12 text-white">
-          <div className="max-w-lg">
+        {/* Right Side - Branding with Illustration */}
+        <div className="w-1/2 bg-gradient-to-br from-[#0070d2] to-[#005fb2] relative overflow-hidden flex items-center justify-center p-12 text-white">
+          {/* Floating Background Shapes */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Large Circle */}
+            <div className="absolute -top-20 -right-20 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+
+            {/* Floating Cards */}
+            <div className="absolute top-1/4 right-12 w-48 h-32 bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl transform rotate-6 hover:rotate-0 transition-transform duration-500">
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                  <div className="text-xs text-white/80">완료율</div>
+                </div>
+                <div className="text-2xl font-bold">87%</div>
+              </div>
+            </div>
+
+            <div className="absolute bottom-1/3 right-24 w-40 h-28 bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500">
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                  <div className="text-xs text-white/80">오늘 마감</div>
+                </div>
+                <div className="text-2xl font-bold">12</div>
+              </div>
+            </div>
+
+            <div className="absolute top-1/2 right-32 w-36 h-24 bg-white/10 backdrop-blur-sm rounded-xl shadow-2xl transform rotate-12 hover:rotate-0 transition-transform duration-500">
+              <div className="p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-blue-300 rounded-full"></div>
+                  <div className="text-xs text-white/80">업체</div>
+                </div>
+                <div className="text-xl font-bold">4개</div>
+              </div>
+            </div>
+
+            {/* Grid Pattern */}
+            <div className="absolute inset-0 opacity-5">
+              <div className="grid grid-cols-12 grid-rows-12 h-full w-full">
+                {[...Array(144)].map((_, i) => (
+                  <div key={i} className="border border-white/20"></div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="max-w-lg relative z-10">
             <h1 className="text-4xl font-bold mb-6">MRO 통합 관리 시스템</h1>
             <p className="text-lg text-white/90 mb-8">
               효율적인 시설·설비 유지·보수·운영 관리 플랫폼
