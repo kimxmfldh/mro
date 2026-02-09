@@ -83,10 +83,10 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
         ))}
       </div>
 
-      {/* 중앙 영역 */}
-      <div className="grid grid-cols-2 gap-6 flex-1 min-h-0">
-        {/* 관리항목별 진행률 */}
-        <Card title="관리항목별 진행률" className="h-full flex flex-col">
+      {/* 메인 영역 - 2x2 그리드 */}
+      <div className="grid grid-cols-2 grid-rows-2 gap-6 flex-1 min-h-0">
+        {/* 좌상: 관리항목별 진행률 */}
+        <Card title="관리항목별 진행률" className="flex flex-col">
           <div className="space-y-4 flex-1 overflow-y-auto pr-2">
             {categoryProgress.map((item) => (
               <div key={item.category.id}>
@@ -110,8 +110,8 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
           </div>
         </Card>
 
-        {/* 오늘의 업무 */}
-        <Card title="오늘의 업무" className="h-full flex flex-col">
+        {/* 우상: 오늘의 업무 */}
+        <Card title="오늘의 업무" className="flex flex-col">
           {todayTasks.length === 0 ? (
             <p className="text-text-secondary text-center py-8">오늘 마감인 업무가 없습니다.</p>
           ) : (
@@ -148,10 +148,8 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
         </Card>
       </div>
 
-      {/* 하단 영역 */}
-      <div className="grid grid-cols-2 gap-6 h-64">
-        {/* 지연 경고 */}
-        <Card title="지연 경고" className="h-full flex flex-col">
+        {/* 좌하: 지연 경고 */}
+        <Card title="지연 경고" className="flex flex-col">
           {overdueTasksList.length === 0 ? (
             <p className="text-text-secondary text-center py-8">지연된 업무가 없습니다.</p>
           ) : (
@@ -181,8 +179,8 @@ const Dashboard: React.FC<DashboardProps> = ({ allTasks, onToggleTask }) => {
           )}
         </Card>
 
-        {/* 최근 활동 */}
-        <Card title="최근 활동" className="h-full flex flex-col">
+        {/* 우하: 최근 활동 */}
+        <Card title="최근 활동" className="flex flex-col">
           <div className="space-y-4 flex-1 overflow-y-auto pr-2">
             {recentActivities.map((activity) => (
               <div key={activity.id} className="flex items-start">
