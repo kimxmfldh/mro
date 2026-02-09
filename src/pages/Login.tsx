@@ -34,7 +34,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             {/* Login Box */}
             <div className="mb-8">
               <h2 className="text-3xl font-semibold text-[#16325c] mb-3">로그인</h2>
-              <p className="text-gray-600">MRO 통합 관리 시스템</p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -239,8 +238,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">업체별 통합 관리</h3>
-                  <p className="text-sm text-white/80">여러 업체의 MRO 업무를 하나의 플랫폼에서 관리</p>
+                  <h3 className="font-semibold mb-1">법인별 통합 관리</h3>
+                  <p className="text-sm text-white/80">여러 법인의 MRO 업무를 하나의 플랫폼에서 관리</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-xl">
