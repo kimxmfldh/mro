@@ -3,6 +3,7 @@ import Card from '../components/common/Card';
 import { categories } from '../data/mockData';
 import Badge from '../components/common/Badge';
 import ProgressBar from '../components/common/ProgressBar';
+import ContextMenu from '../components/ContextMenu';
 import { Filter } from 'lucide-react';
 import { Task } from '../types';
 
@@ -14,6 +15,7 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [showInactive, setShowInactive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [contextMenu, setContextMenu] = useState<{ x: number; y: number; categoryId: number } | null>(null);
   const itemsPerPage = 20;
 
   // 필터링된 카테고리
@@ -46,6 +48,21 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
 
   const getCategoryCompletedCount = (categoryId: number) => {
     return tasks.filter(t => t.categoryId === categoryId && t.isChecked).length;
+  };
+
+  const handleContextMenu = (e: React.MouseEvent, categoryId: number) => {
+    e.preventDefault();
+    setContextMenu({ x: e.clientX, y: e.clientY, categoryId });
+  };
+
+  const handleEdit = (categoryId: number) => {
+    alert(`관리항목 ID ${categoryId} 수정 기능은 준비 중입니다.`);
+  };
+
+  const handleDelete = (categoryId: number) => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      alert(`관리항목 ID ${categoryId} 삭제 기능은 준비 중입니다.`);
+    }
   };
 
   return (
@@ -103,6 +120,7 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
                   return (
                     <tr
                       key={category.id}
+                      onContextMenu={(e) => handleContextMenu(e, category.id)}
                       className="border-b border-border hover:bg-gray-50 transition-colors cursor-pointer"
                     >
                       <td className="py-3 px-4">
@@ -188,6 +206,17 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
           </div>
         </div>
       </Card>
+
+      {/* 컨텍스트 메뉴 */}
+      {contextMenu && (
+        <ContextMenu
+          x={contextMenu.x}
+          y={contextMenu.y}
+          onEdit={() => handleEdit(contextMenu.categoryId)}
+          onDelete={() => handleDelete(contextMenu.categoryId)}
+          onClose={() => setContextMenu(null)}
+        />
+      )}
     </div>
   );
 };
