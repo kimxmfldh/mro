@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Checklist from './pages/Checklist';
 import Calendar from './pages/Calendar';
 import Categories from './pages/Categories';
-import Statistics from './pages/Statistics';
+import Settlement from './pages/Settlement';
 import Settings from './pages/Settings';
 import TaskModal from './components/TaskModal';
 import CategoryModal from './components/CategoryModal';
@@ -216,7 +216,7 @@ function App() {
               />
             }
           />
-          <Route path="/statistics" element={<Statistics />} />
+          <Route path="/settlement" element={<Settlement tasks={tasks} />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>

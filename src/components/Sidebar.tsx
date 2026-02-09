@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, CheckSquare, Calendar, FolderKanban, BarChart3, Settings, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, CheckSquare, Calendar, FolderKanban, Receipt, Settings, ChevronDown } from 'lucide-react';
 
 interface SidebarProps {
   currentUser?: { name: string; role: string };
@@ -16,7 +16,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentUser, onLogout }) => {
     { path: '/checklist', icon: CheckSquare, label: '체크리스트' },
     { path: '/calendar', icon: Calendar, label: '캘린더' },
     { path: '/categories', icon: FolderKanban, label: '관리항목' },
-    { path: '/statistics', icon: BarChart3, label: '통계' },
+    { path: '/settlement', icon: Receipt, label: '정산' },
     { path: '/settings', icon: Settings, label: '설정' },
   ];
 
