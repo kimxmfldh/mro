@@ -13,6 +13,8 @@ interface CategoriesProps {
 const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [showInactive, setShowInactive] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   // 필터링된 카테고리
   const filteredCategories = useMemo(() => {
@@ -29,6 +31,13 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
       return true;
     });
   }, [searchKeyword, showInactive]);
+
+  // 페이지네이션
+  const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
+  const paginatedCategories = filteredCategories.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   // 각 카테고리별 업무 수 계산
   const getCategoryTaskCount = (categoryId: number) => {
@@ -79,14 +88,14 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
               </tr>
             </thead>
             <tbody>
-              {filteredCategories.length === 0 ? (
+              {paginatedCategories.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="text-center py-12 text-text-secondary text-sm">
                     검색 결과가 없습니다.
                   </td>
                 </tr>
               ) : (
-                filteredCategories.map((category) => {
+                paginatedCategories.map((category) => {
                   const totalTasks = getCategoryTaskCount(category.id);
                   const completedTasks = getCategoryCompletedCount(category.id);
                   const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
@@ -140,6 +149,43 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* 하단 영역 - 관리항목 추가 + 페이지네이션 */}
+        <div className="border-t border-border bg-gray-50">
+          <div className="flex items-center justify-between px-4 py-3">
+            {/* 관리항목 추가 버튼 */}
+            <button
+              onClick={() => alert('관리항목 추가 기능은 준비 중입니다.')}
+              className="text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2"
+            >
+              <span className="text-lg font-light">+</span>
+              <span>관리항목 추가</span>
+            </button>
+
+            {/* 페이지네이션 */}
+            {totalPages > 1 && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className="px-3 py-1 text-sm text-text-secondary hover:text-text-primary disabled:opacity-30 transition-colors"
+                >
+                  이전
+                </button>
+                <span className="text-sm text-text-secondary">
+                  {currentPage} / {totalPages}
+                </span>
+                <button
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                  className="px-3 py-1 text-sm text-text-secondary hover:text-text-primary disabled:opacity-30 transition-colors"
+                >
+                  다음
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </Card>
     </div>
