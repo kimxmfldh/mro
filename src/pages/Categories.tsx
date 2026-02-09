@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import Card from '../components/common/Card';
-import { categories } from '../data/mockData';
 import Badge from '../components/common/Badge';
 import ProgressBar from '../components/common/ProgressBar';
 import ContextMenu from '../components/ContextMenu';
@@ -9,9 +8,13 @@ import { Task } from '../types';
 
 interface CategoriesProps {
   tasks: Task[];
+  categories: any[];
+  onEditCategory: (categoryId: number) => void;
+  onDeleteCategory: (categoryId: number) => void;
+  onOpenCategoryModal: () => void;
 }
 
-const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
+const Categories: React.FC<CategoriesProps> = ({ tasks, categories, onEditCategory, onDeleteCategory, onOpenCategoryModal }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [showInactive, setShowInactive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,12 +59,13 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
   };
 
   const handleEdit = (categoryId: number) => {
-    alert(`관리항목 ID ${categoryId} 수정 기능은 준비 중입니다.`);
+    onEditCategory(categoryId);
   };
 
   const handleDelete = (categoryId: number) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      alert(`관리항목 ID ${categoryId} 삭제 기능은 준비 중입니다.`);
+      onDeleteCategory(categoryId);
+      setContextMenu(null);
     }
   };
 
@@ -174,7 +178,7 @@ const Categories: React.FC<CategoriesProps> = ({ tasks }) => {
           <div className="flex items-center justify-between px-4 py-3">
             {/* 관리항목 추가 버튼 */}
             <button
-              onClick={() => alert('관리항목 추가 기능은 준비 중입니다.')}
+              onClick={onOpenCategoryModal}
               className="text-sm text-text-secondary hover:text-primary transition-colors flex items-center gap-2"
             >
               <span className="text-lg font-light">+</span>

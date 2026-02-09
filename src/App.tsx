@@ -8,16 +8,20 @@ import Categories from './pages/Categories';
 import Statistics from './pages/Statistics';
 import Settings from './pages/Settings';
 import TaskModal from './components/TaskModal';
-import { tasks as initialTasks, users } from './data/mockData';
-import { Task, TaskCycle, TaskPriority } from './types';
+import CategoryModal from './components/CategoryModal';
+import { tasks as initialTasks, categories as initialCategories, users } from './data/mockData';
+import { Task, TaskCycle, TaskPriority, Category } from './types';
 import { format } from 'date-fns';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
   const currentUser = users.find((u) => u.email === currentUserEmail);
 
@@ -96,6 +100,58 @@ function App() {
     setIsTaskModalOpen(true);
   };
 
+  const handleSaveCategory = (categoryData: {
+    name: string;
+    description: string;
+    color: string;
+    isActive: boolean;
+  }) => {
+    if (editingCategory) {
+      // 수정
+      setCategories((prevCategories) =>
+        prevCategories.map((category) =>
+          category.id === editingCategory.id
+            ? { ...category, ...categoryData }
+            : category
+        )
+      );
+    } else {
+      // 생성
+      const newCategory: Category = {
+        id: Math.max(...categories.map((c) => c.id)) + 1,
+        ...categoryData,
+        sortOrder: categories.length + 1,
+      };
+      setCategories((prevCategories) => [...prevCategories, newCategory]);
+    }
+
+    setIsCategoryModalOpen(false);
+    setEditingCategory(null);
+  };
+
+  const handleEditCategory = (categoryId: number) => {
+    const category = categories.find(c => c.id === categoryId);
+    if (category) {
+      setEditingCategory(category);
+      setIsCategoryModalOpen(true);
+    }
+  };
+
+  const handleDeleteCategory = (categoryId: number) => {
+    // 해당 카테고리를 사용하는 업무가 있는지 확인
+    const tasksUsingCategory = tasks.filter(t => t.categoryId === categoryId);
+    if (tasksUsingCategory.length > 0) {
+      alert(`이 관리항목을 사용하는 업무가 ${tasksUsingCategory.length}개 있어 삭제할 수 없습니다.`);
+      return;
+    }
+    setCategories((prevCategories) => prevCategories.filter((category) => category.id !== categoryId));
+  };
+
+  const handleOpenNewCategoryModal = () => {
+    setEditingCategory(null);
+    setIsCategoryModalOpen(true);
+  };
+
   if (!isLoggedIn) {
     return (
       <HashRouter>
@@ -137,7 +193,18 @@ function App() {
               />
             }
           />
-          <Route path="/categories" element={<Categories tasks={tasks} />} />
+          <Route
+            path="/categories"
+            element={
+              <Categories
+                tasks={tasks}
+                categories={categories}
+                onEditCategory={handleEditCategory}
+                onDeleteCategory={handleDeleteCategory}
+                onOpenCategoryModal={handleOpenNewCategoryModal}
+              />
+            }
+          />
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
@@ -151,6 +218,16 @@ function App() {
           }}
           onSave={handleSaveTask}
           editTask={editingTask}
+        />
+
+        <CategoryModal
+          isOpen={isCategoryModalOpen}
+          onClose={() => {
+            setIsCategoryModalOpen(false);
+            setEditingCategory(null);
+          }}
+          onSave={handleSaveCategory}
+          editCategory={editingCategory}
         />
       </Layout>
     </HashRouter>
