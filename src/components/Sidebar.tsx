@@ -14,7 +14,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentUser, onLogout }) => {
   const menuItems = [
     { path: '/dashboard', icon: LayoutDashboard, label: '대시보드' },
     { path: '/checklist', icon: CheckSquare, label: '체크리스트' },
-    { path: '/calendar', icon: Calendar, label: '캘린더', disabled: true },
+    { path: '/calendar', icon: Calendar, label: '캘린더' },
     { path: '/categories', icon: FolderKanban, label: '관리항목' },
     { path: '/statistics', icon: BarChart3, label: '통계' },
     { path: '/settings', icon: Settings, label: '설정' },

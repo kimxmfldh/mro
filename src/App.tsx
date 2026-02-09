@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Checklist from './pages/Checklist';
+import Calendar from './pages/Calendar';
 import Categories from './pages/Categories';
 import Statistics from './pages/Statistics';
 import Settings from './pages/Settings';
@@ -192,6 +193,10 @@ function App() {
                 onDeleteTask={handleDeleteTask}
               />
             }
+          />
+          <Route
+            path="/calendar"
+            element={<Calendar tasks={tasks} onToggleTask={handleToggleTask} />}
           />
           <Route
             path="/categories"
