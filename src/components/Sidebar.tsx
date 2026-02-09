@@ -11,7 +11,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentUser, onLogout }) => {
   const location = useLocation();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
-  const menuItems = [
+  const menuItems: Array<{ path: string; icon: any; label: string; disabled?: boolean }> = [
     { path: '/dashboard', icon: LayoutDashboard, label: '대시보드' },
     { path: '/checklist', icon: CheckSquare, label: '체크리스트' },
     { path: '/calendar', icon: Calendar, label: '캘린더' },
