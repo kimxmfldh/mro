@@ -17,6 +17,7 @@ function App() {
   const [currentUserEmail, setCurrentUserEmail] = useState('');
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const currentUser = users.find((u) => u.email === currentUserEmail);
 
@@ -55,14 +56,44 @@ function App() {
     dueDate: string;
     notes: string;
   }) => {
-    const newTask: Task = {
-      id: Math.max(...tasks.map((t) => t.id)) + 1,
-      ...taskData,
-      isChecked: false,
-    };
+    if (editingTask) {
+      // 수정
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === editingTask.id
+            ? { ...task, ...taskData }
+            : task
+        )
+      );
+    } else {
+      // 생성
+      const newTask: Task = {
+        id: Math.max(...tasks.map((t) => t.id)) + 1,
+        ...taskData,
+        isChecked: false,
+      };
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    }
 
-    setTasks((prevTasks) => [...prevTasks, newTask]);
     setIsTaskModalOpen(false);
+    setEditingTask(null);
+  };
+
+  const handleEditTask = (taskId: number) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (task) {
+      setEditingTask(task);
+      setIsTaskModalOpen(true);
+    }
+  };
+
+  const handleDeleteTask = (taskId: number) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  };
+
+  const handleOpenNewTaskModal = () => {
+    setEditingTask(null);
+    setIsTaskModalOpen(true);
   };
 
   if (!isLoggedIn) {
@@ -100,7 +131,9 @@ function App() {
               <Checklist
                 tasks={tasks}
                 onToggleTask={handleToggleTask}
-                onOpenTaskModal={() => setIsTaskModalOpen(true)}
+                onOpenTaskModal={handleOpenNewTaskModal}
+                onEditTask={handleEditTask}
+                onDeleteTask={handleDeleteTask}
               />
             }
           />
@@ -112,8 +145,12 @@ function App() {
 
         <TaskModal
           isOpen={isTaskModalOpen}
-          onClose={() => setIsTaskModalOpen(false)}
+          onClose={() => {
+            setIsTaskModalOpen(false);
+            setEditingTask(null);
+          }}
           onSave={handleSaveTask}
+          editTask={editingTask}
         />
       </Layout>
     </HashRouter>

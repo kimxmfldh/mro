@@ -12,9 +12,11 @@ interface ChecklistProps {
   tasks: Task[];
   onToggleTask: (taskId: number) => void;
   onOpenTaskModal: () => void;
+  onEditTask: (taskId: number) => void;
+  onDeleteTask: (taskId: number) => void;
 }
 
-const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskModal }) => {
+const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskModal, onEditTask, onDeleteTask }) => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
@@ -104,12 +106,13 @@ const Checklist: React.FC<ChecklistProps> = ({ tasks, onToggleTask, onOpenTaskMo
   };
 
   const handleEdit = (taskId: number) => {
-    alert(`업무 ID ${taskId} 수정 기능은 준비 중입니다.`);
+    onEditTask(taskId);
   };
 
   const handleDelete = (taskId: number) => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      alert(`업무 ID ${taskId} 삭제 기능은 준비 중입니다.`);
+      onDeleteTask(taskId);
+      setContextMenu(null);
     }
   };
 

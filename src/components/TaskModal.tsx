@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from './common/Modal';
 import Input from './common/Input';
 import Select from './common/Select';
 import Button from './common/Button';
 import { categories, users, companies } from '../data/mockData';
-import { TaskCycle, TaskPriority } from '../types';
+import { TaskCycle, TaskPriority, Task } from '../types';
 import { format } from 'date-fns';
 
 interface TaskModalProps {
@@ -20,9 +20,10 @@ interface TaskModalProps {
     dueDate: string;
     notes: string;
   }) => void;
+  editTask?: Task | null;
 }
 
-const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
+const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave, editTask }) => {
   const [companyId, setCompanyId] = useState<number>(1);
   const [title, setTitle] = useState('');
   const [categoryId, setCategoryId] = useState<number>(1);
@@ -31,6 +32,20 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
   const [priority, setPriority] = useState<TaskPriority>('보통');
   const [dueDate, setDueDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [notes, setNotes] = useState('');
+
+  // 편집 모드일 때 데이터 로드
+  useEffect(() => {
+    if (editTask) {
+      setCompanyId(editTask.companyId);
+      setTitle(editTask.title);
+      setCategoryId(editTask.categoryId);
+      setAssigneeId(editTask.assigneeId);
+      setCycle(editTask.cycle);
+      setPriority(editTask.priority);
+      setDueDate(editTask.dueDate);
+      setNotes(editTask.notes || '');
+    }
+  }, [editTask]);
 
   const cycleOptions: TaskCycle[] = ['매일', '매주', '매월', '분기', '반기', '연간', '수시'];
   const priorityOptions: { value: TaskPriority; color: string }[] = [
@@ -92,7 +107,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isOpen, onClose, onSave }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="새 업무 등록">
+    <Modal isOpen={isOpen} onClose={handleClose} title={editTask ? '업무 수정' : '새 업무 등록'}>
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* 업체 */}
         <div>
