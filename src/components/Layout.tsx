@@ -16,9 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentUser, onLogout }) => {
         <div className="h-full flex items-center px-6 justify-between">
           {/* Left Section - Logo */}
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center mr-3">
-              <span className="text-white font-bold text-sm">M</span>
-            </div>
+            <img src="/mro/logo.png" alt="MRO Logo" className="h-8 mr-3" />
             <h1 className="text-lg font-bold text-text-primary">MRO 시스템</h1>
           </div>
 
