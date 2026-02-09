@@ -104,7 +104,7 @@ function App() {
               />
             }
           />
-          <Route path="/categories" element={<Categories />} />
+          <Route path="/categories" element={<Categories tasks={tasks} />} />
           <Route path="/statistics" element={<Statistics />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
